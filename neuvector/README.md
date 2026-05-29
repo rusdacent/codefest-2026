@@ -19,12 +19,12 @@
     - [3.1. Добавление Deny-правила](#31-добавление-deny-правила)
     - [3.2. Проверка блокировки процесса](#32-проверка-блокировки-процесса)
   - [Демо 4. Сканирование уязвимостей](#демо-4-сканирование-уязвимостей)
-  - [Демо 5. Compliance](#демо-5-compliance)
-  - [Демо 6. Admission Control](#демо-6-admission-control)
-    - [6.1. Включить Admission Control](#61-включить-admission-control)
-    - [6.2. Создание правила](#62-создание-правила)
-    - [6.3. Запуск образа не из quay.io](#63-запуск-образа-не-из-quayio)
-    - [6.4. Запуск образа из quay.io](#64-запуск-образа-из-quayio)
+  - [Демо 5. Admission Control](#демо-5-admission-control)
+    - [5.1. Включить Admission Control](#51-включить-admission-control)
+    - [5.2. Создание правила](#52-создание-правила)
+    - [5.3. Запуск образа не из quay.io](#53-запуск-образа-не-из-quayio)
+    - [5.4. Запуск образа из quay.io](#54-запуск-образа-из-quayio)
+  - [Демо 6. Compliance](#демо-6-compliance)
   - [Очистка кластера](#очистка-кластера)
 
 # NeuVector
@@ -140,9 +140,7 @@ CLUSTER_IP=$(kubectl get --namespace neuvector -o jsonpath="{.spec.clusterIP}" s
 ```bash
 kubectl create namespace demo
 
-kubectl apply -f redis.yaml  -n demo
-kubectl apply -f nodejs.yaml -n demo
-kubectl apply -f nginx.yaml  -n demo
+kubectl apply -f redis.yaml -f nodejs.yaml -f nginx.yaml
 
 kubectl get pods -n demo
 kubectl get svc  -n demo
@@ -271,17 +269,11 @@ UI -> **Security Risks** -> **Vulnerabilities**.
 
 На сетевой карте должны появиьтся красные метки, которые отмечают уязвимости
 
-## Демо 5. Compliance
-
-UI -> **Notifications** -> **Risk Report** -> **Compliance**.
-
-Как пример можно посмотреть `K.1.1.20`
-
-## Демо 6. Admission Control
+## Демо 5. Admission Control
 
 Разрешить образы только из доверенного реджистри (`quay.io`)
 
-### 6.1. Включить Admission Control
+### 5.1. Включить Admission Control
 
 UI -> **Policy** -> **Admission Control**.
 
@@ -295,7 +287,7 @@ UI -> **Policy** -> **Admission Control**.
 
 Выбираем **Protect**
 
-### 6.2. Создание правила
+### 5.2. Создание правила
 
 UI -> **Policy** -> **Admission Control**, список правил -> кнопка **Add**:
 
@@ -304,7 +296,7 @@ UI -> **Policy** -> **Admission Control**, список правил -> кноп
    **is not any of** -> значение: `https://quay.io`
 3. Правило должно быть в состоянии **Enabled**
 
-### 6.3. Запуск образа не из quay.io
+### 5.3. Запуск образа не из quay.io
 
 ```bash
 kubectl run test-dockerhub --image nginx:latest
@@ -317,7 +309,7 @@ Error from server: admission webhook "neuvector-validating-admission-webhook..."
   denied the request: Creation of Kubernetes Pod is denied.
 ```
 
-### 6.4. Запуск образа из quay.io
+### 5.4. Запуск образа из quay.io
 
 ```bash
 kubectl run test-quay --image quay.io/prometheus/busybox -- sleep 3600
@@ -331,6 +323,17 @@ kubectl get pod test-quay -w
 ```bash
 kubectl delete pod test-quay test-dockerhub --ignore-not-found
 ```
+
+UI -> **Notifications** -> **Risk Report**
+
++ **Network Activity**
+
+## Демо 6. Compliance
+
+UI -> **Notifications** -> **Security Risks** -> **Compliance**.
+
+Как пример можно посмотреть `K.1.1.20`
+
 
 ## Очистка кластера
 

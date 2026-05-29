@@ -1,0 +1,23 @@
+# CO-RE eBPF; requires kernel 5.8+. Works out of the box on 6.x without headers.
+driver:
+  kind: modern_ebpf
+
+falcoctl:
+  artifact:
+    install:
+      enabled: true
+    follow:
+      enabled: true
+  config:
+    artifact:
+      install:
+        refs: [falco-rules:3]
+      follow:
+        refs: [falco-rules:3]
+
+falco:
+  json_output: true
+  log_level: info
+  priority: notice
+
+tty: true

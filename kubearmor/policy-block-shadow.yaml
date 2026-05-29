@@ -1,0 +1,15 @@
+apiVersion: security.kubearmor.com/v1
+kind: KubeArmorPolicy
+metadata:
+  name: block-shadow-read
+  namespace: default
+spec:
+  severity: 5
+  selector:
+    matchLabels:
+      run: test-pod-baked
+  file:
+    matchPaths:
+    - path: /etc/shadow
+      action: Block
+  action: Block

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: test-unsigned
+  name: test-unsigned
+spec:
+  containers:
+  - image: nginx:latest
+    name: test-unsigned
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}

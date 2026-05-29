@@ -1,0 +1,23 @@
+apiVersion: cilium.io/v1alpha1
+kind: TracingPolicy
+metadata:
+  name: file-monitoring-naive-openat
+spec:
+  kprobes:
+    - call: "sys_openat"
+      syscall: true
+      return: false
+      args:
+        - index: 0
+          type: int
+        - index: 1
+          type: "string"
+        - index: 2
+          type: "int"
+      selectors:
+        - matchArgs:
+            - index: 1
+              operator: "Equal"
+              values:
+                - "/etc/shadow"
+                - "/etc/sudoers"

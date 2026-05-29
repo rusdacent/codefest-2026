@@ -1,0 +1,14 @@
+apiVersion: security.kubearmor.com/v1
+kind: KubeArmorPolicy
+metadata:
+  name: block-ls
+  namespace: default
+spec:
+  severity: 5
+  selector:
+    matchLabels:
+      run: test-pod-baked
+  process:
+    matchPaths:
+    - path: /usr/bin/ls
+  action: Block

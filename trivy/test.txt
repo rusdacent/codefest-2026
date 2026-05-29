@@ -1,0 +1,2 @@
+PULUMI_TOKEN_TEST="pul-afde034feeebc098ebc4000036e00000deadbeef"
+
